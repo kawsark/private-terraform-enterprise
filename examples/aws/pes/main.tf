@@ -7,7 +7,7 @@ locals {
 }
 
 resource "aws_instance" "pes" {
-  count                  = 2
+  count                  = "${var.ptfe_server_count}"
   ami                    = "${var.aws_instance_ami}"
   instance_type          = "${var.aws_instance_type}"
   subnet_id              = "${element(var.subnet_ids, count.index)}"
@@ -29,7 +29,8 @@ resource "aws_instance" "pes" {
 }
 
 resource "aws_eip" "pes" {
-  instance = "${aws_instance.pes.0.id}"
+  count    = "${var.ptfe_server_count}"
+  instance = "${element(aws_instance.pes.*.id,count.index)}"
   vpc      = true
 }
 
@@ -38,7 +39,7 @@ resource "aws_route53_record" "pes" {
   name    = "${local.namespace}.hashidemos.io."
   type    = "A"
   ttl     = "300"
-  records = ["${aws_eip.pes.public_ip}"]
+  records = ["${aws_eip.pes.0.public_ip}"]
 }
 
 resource "aws_s3_bucket" "pes" {

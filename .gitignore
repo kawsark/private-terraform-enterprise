@@ -1,3 +1,9 @@
+.DS_Store
+*.backup
+*.bundle
+*.key
+*.therealk.com.txt
+*.rli
 *~
 *.tfvars
 # Local .terraform directories

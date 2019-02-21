@@ -1,5 +1,14 @@
 #!/bin/bash
 
+cd /tmp
+curl https://install.terraform.io/ptfe/stable > install.sh
+chmod +x install.sh
+./install.sh
+
+
+# Command
+echo | openssl s_client -servername local -connect 34.238.25.35:8800 2>/dev/null | openssl x509 -noout -fingerprint
+
 # create replicated unattended installer config
 cat > /etc/replicated.conf <<EOF
 {
